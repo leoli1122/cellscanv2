@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>電芯篩選查詢 — G450</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="title-tag">台塑尖端能源 ∙ 彰濱廠</div>
+  <h1>CELL SCAN VERIFIER</h1>
+  <div class="subtitle">G450 批號篩選名單 ∙ 2,198 筆 ∙ 2026-05-26</div>
+</header>
+
+<!-- ── Tabs ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('scan', this)">▶ 掃描</button>
+  <button class="tab-btn"        onclick="switchTab('log',  this)">📋 每日紀錄</button>
+</div>
+
+<!-- ══ SCAN TAB ══════════════════════════════════════════════ -->
+<div class="tab-pane active" id="tab-scan">
+
+  <div class="scanner-label">
+    <span class="pulse-dot"></span>
+    掃碼槍 / 鍵盤輸入
+  </div>
+  <input id="scan-input" type="text" inputmode="none"
+         autocomplete="off" autocorrect="off" spellcheck="false"
+         placeholder="對準此處後掃碼槍掃描...">
+
+  <button class="cam-btn" id="cam-toggle-btn" onclick="toggleCamera()">
+    <span id="cam-btn-icon">📷</span>
+    <span id="cam-btn-label">開啟相機掃碼（iPhone / 手機）</span>
+  </button>
+
+  <!-- viewfinder -->
+  <div id="cam-wrap">
+    <div id="cam-container">
+      <video id="cam-video" playsinline autoplay muted></video>
+      <canvas id="cam-canvas"></canvas>
+      <div class="aim-overlay">
+        <div class="aim-box">
+          <div class="scan-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="cam-hint">將條碼對準中央綠色框線</div>
+  </div>
+
+  <!-- debug bar -->
+  <div id="debug-bar" style="
+    display:none; margin-top:8px; padding:10px 14px;
+    background:#fffbe6; border:1px solid #ffe066; border-left:3px solid #f5a623;
+    font-family:'Share Tech Mono',monospace; font-size:12px; color:#7a5c00;
+    letter-spacing:1px; word-break:break-all;">
+    📡 RAW: —
+  </div>
+
+  <!-- result -->
+  <div class="result-panel" id="result-panel" data-label="RESULT">
+    <div class="result-content" id="result-content">
+      <div class="result-idle">AWAITING SCAN</div>
+    </div>
+  </div>
+
+  <!-- counters -->
+  <div class="counter-bar">
+    <div class="counter-card c-total">
+      <span class="c-label">TODAY</span>
+      <span class="c-num" id="cnt-total">0</span>
+    </div>
+    <div class="counter-card c-hit">
+      <span class="c-label">IN LIST ✓</span>
+      <span class="c-num" id="cnt-hit">0</span>
+    </div>
+    <div class="counter-card c-miss">
+      <span class="c-label">NOT FOUND ✗</span>
+      <span class="c-num" id="cnt-miss">0</span>
+    </div>
+  </div>
+
+  <!-- today history -->
+  <div class="section-head">
+    <span>TODAY'S HISTORY</span>
+    <button class="btn-sm" onclick="clearToday()">CLEAR TODAY</button>
+    <button class="btn-sm" id="debug-btn" onclick="toggleDebug()" style="margin-left:auto;">DEBUG</button>
+  </div>
+  <ul id="history-list"></ul>
+
+</div>
+
+<!-- ══ LOG TAB ═══════════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-log">
+  <div class="log-toolbar">
+    <span>DAILY LOG</span>
+    <button class="btn-sm export" onclick="exportCSV()">⬇ 匯出 CSV</button>
+    <button class="btn-sm"        onclick="clearAllLog()">清除全部</button>
+  </div>
+  <div id="daily-cards"></div>
+</div>
+
+<footer>台塑尖端能源股份有限公司 ∙ 品質工程部</footer>
+
+<!-- ZXing: 本地檔案，不依賴 CDN -->
+<script src="assets/zxing-browser.min.js"></script>
+
+<!-- data first, then app logic -->
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>
